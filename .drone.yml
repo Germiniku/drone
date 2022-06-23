@@ -1,0 +1,22 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: linter
+  image: golang:1.17
+  commands:
+    - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+    - golangci-lint run- name: build
+
+- name: build      
+  image: golang:1.17
+  environment:
+    GOOS: linux
+    GOARCH: amd64
+    CGO_ENABLED: 0
+    GOPROXY: https://goproxy.cn,direct
+  commands:
+    - go build -o app
+
